@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê - VSM CMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="/placeholder.svg?height=40&width=40" alt="VSM Logo">
+                    <span>VSM CMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i data-feather="home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="create.html" class="nav-link">
+                            <i data-feather="plus-circle"></i>
+                            <span>Tạo bài viết</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="calendar.html" class="nav-link">
+                            <i data-feather="calendar"></i>
+                            <span>Lịch</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active admin-only">
+                        <a href="statistics.html" class="nav-link">
+                            <i data-feather="bar-chart-2"></i>
+                            <span>Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only">
+                        <a href="export.html" class="nav-link">
+                            <i data-feather="download"></i>
+                            <span>Xuất dữ liệu</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="/placeholder.svg?height=32&width=32" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <span class="user-name" id="userName">Admin</span>
+                        <span class="user-role" id="userRole">Administrator</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i data-feather="log-out"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Thống kê</h1>
+                    <p>Báo cáo và phân tích dữ liệu</p>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i data-feather="moon"></i>
+                    </button>
+                    <div class="stats-controls">
+                        <select id="timeRange" class="filter-select">
+                            <option value="7">7 ngày qua</option>
+                            <option value="30">30 ngày qua</option>
+                            <option value="90">3 tháng qua</option>
+                            <option value="365">1 năm qua</option>
+                        </select>
+                        <button class="btn btn-primary" id="refreshStats">
+                            <i data-feather="refresh-cw"></i>
+                            Làm mới
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Overview Stats -->
+                <div class="stats-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i data-feather="file-text"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalPosts">0</h3>
+                                <p>Tổng bài viết</p>
+                                <span class="stat-change positive" id="postsChange">+12%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i data-feather="eye"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="publishedPosts">0</h3>
+                                <p>Đã xuất bản</p>
+                                <span class="stat-change positive" id="publishedChange">+8%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i data-feather="edit"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="draftPosts">0</h3>
+                                <p>Bản nháp</p>
+                                <span class="stat-change negative" id="draftsChange">-5%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i data-feather="users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="activeAuthors">0</h3>
+                                <p>Tác giả hoạt động</p>
+                                <span class="stat-change positive" id="authorsChange">+2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="charts-grid">
+                        <!-- Posts Over Time Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Bài viết theo thời gian</h3>
+                                <div class="chart-legend">
+                                    <span class="legend-item">
+                                        <span class="legend-color published"></span>
+                                        Đã xuất bản
+                                    </span>
+                                    <span class="legend-item">
+                                        <span class="legend-color draft"></span>
+                                        Bản nháp
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="postsChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Category Distribution Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Phân bố theo danh mục</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Authors Performance Chart -->
+                        <div class="chart-card full-width">
+                            <div class="chart-header">
+                                <h3>Hiệu suất tác giả</h3>
+                                <select id="authorFilter" class="filter-select">
+                                    <option value="">Tất cả tác giả</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="authorsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Stats -->
+                <div class="detailed-stats">
+                    <div class="stats-tables">
+                        <!-- Top Posts Table -->
+                        <div class="table-card">
+                            <div class="table-header">
+                                <h3>Bài viết nổi bật</h3>
+                                <button class="btn btn-secondary" id="viewAllPosts">
+                                    Xem tất cả
+                                </button>
+                            </div>
+                            <div class="table-container">
+                                <table class="stats-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tiêu đề</th>
+                                            <th>Tác giả</th>
+                                            <th>Danh mục</th>
+                                            <th>Ngày đăng</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="topPostsTable">
+                                        <!-- Table rows will be generated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Authors Stats Table -->
+                        <div class="table-card">
+                            <div class="table-header">
+                                <h3>Thống kê tác giả</h3>
+                            </div>
+                            <div class="table-container">
+                                <table class="stats-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tác giả</th>
+                                            <th>Tổng bài viết</th>
+                                            <th>Đã xuất bản</th>
+                                            <th>Bản nháp</th>
+                                            <th>Tỷ lệ xuất bản</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="authorsStatsTable">
+                                        <!-- Table rows will be generated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer class="app-footer">
+        © 2025 Viet Nam Student Marathon • vsm.org.vn@gmail.com • Phát triển bởi Phòng Công Nghệ Thông Tin
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/modules/theme.js"></script>
+    <script src="js/modules/fetch.js"></script>
+    <script src="js/modules/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+  // Check admin permission - redirect if not admin
+  if (!window.Auth.requireAdmin()) return;
+  
+  const chartManager = new ChartManager();
+  await chartManager.init();
+  
+  if (typeof window.feather !== 'undefined') {
+    window.feather.replace();
+  }
+});
+    </script>
+</body>
+</html>

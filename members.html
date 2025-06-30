@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý thành viên - VSM CMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="VSM Logo">
+                    <span>VSM CMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i data-feather="home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="create.html" class="nav-link">
+                            <i data-feather="plus-circle"></i>
+                            <span>Tạo bài viết</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="calendar.html" class="nav-link">
+                            <i data-feather="calendar"></i>
+                            <span>Lịch</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only active">
+                        <a href="members.html" class="nav-link">
+                            <i data-feather="users"></i>
+                            <span>Quản lý thành viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only">
+                        <a href="statistics.html" class="nav-link">
+                            <i data-feather="bar-chart-2"></i>
+                            <span>Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only">
+                        <a href="export.html" class="nav-link">
+                            <i data-feather="download"></i>
+                            <span>Xuất dữ liệu</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="assets/member/long.png" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <span class="user-name" id="userName">Admin</span>
+                        <span class="user-role" id="userRole">Administrator</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i data-feather="log-out"></i>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Quản lý thành viên</h1>
+                    <p>Quản lý tài khoản và quyền hạn thành viên</p>
+                </div>
+                
+                <div class="topbar-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i data-feather="moon"></i>
+                    </button>
+                    <div class="search-box">
+                        <i data-feather="search"></i>
+                        <input type="text" placeholder="Tìm kiếm thành viên..." id="searchInput">
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Actions Bar -->
+                <div class="actions-bar">
+                    <div class="actions-left">
+                        <button class="btn btn-primary" id="addMemberBtn">
+                            <i data-feather="user-plus"></i>
+                            Thêm thành viên
+                        </button>
+                    </div>
+                    
+                    <div class="actions-right">
+                        <select class="filter-select" id="roleFilter">
+                            <option value="">Tất cả vai trò</option>
+                            <option value="admin">Administrator</option>
+                            <option value="editor">Cộng tác viên</option>
+                        </select>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="active">Hoạt động</option>
+                            <option value="inactive">Tạm khóa</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Members Table -->
+                <div class="table-container">
+                    <table class="table" id="membersTable">
+                        <thead>
+                            <tr>
+                                <th>Thành viên</th>
+                                <th>Email</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tham gia</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <!-- Members will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Loading State -->
+                <div class="loading" id="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Đang tải danh sách thành viên...</p>
+                </div>
+                
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <i data-feather="users"></i>
+                    <h3>Chưa có thành viên nào</h3>
+                    <p>Thêm thành viên đầu tiên để bắt đầu quản lý</p>
+                    <button class="btn btn-primary" onclick="showAddMemberModal()">
+                        <i data-feather="user-plus"></i>
+                        Thêm thành viên
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add/Edit Member Modal -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Thêm thành viên mới</h3>
+                <button class="modal-close" id="modalClose">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="memberForm">
+                    <input type="hidden" id="memberId" name="memberId">
+                    
+                    <div class="form-group">
+                        <label for="memberName">Họ và tên *</label>
+                        <input type="text" id="memberName" name="memberName" required placeholder="Nhập họ và tên">
+                        <div class="form-error" id="nameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberEmail">Email *</label>
+                        <input type="email" id="memberEmail" name="memberEmail" required placeholder="Nhập địa chỉ email">
+                        <div class="form-error" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberPassword">Mật khẩu *</label>
+                        <input type="password" id="memberPassword" name="memberPassword" required placeholder="Nhập mật khẩu">
+                        <small>Mật khẩu phải có ít nhất 6 ký tự</small>
+                        <div class="form-error" id="passwordError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberRole">Vai trò *</label>
+                        <select id="memberRole" name="memberRole" required>
+                            <option value="">Chọn vai trò</option>
+                            <option value="admin">Administrator</option>
+                            <option value="editor">Cộng tác viên</option>
+                        </select>
+                        <div class="form-error" id="roleError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="memberStatus">Trạng thái</label>
+                        <select id="memberStatus" name="memberStatus">
+                            <option value="active">Hoạt động</option>
+                            <option value="inactive">Tạm khóa</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelBtn">Hủy</button>
+                <button type="submit" class="btn btn-primary" id="saveBtn" form="memberForm">
+                    <i data-feather="save"></i>
+                    Lưu thành viên
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="app-footer">
+        © 2025 Viet Nam Student Marathon | Được phát triển bởi phòng Công nghệ Thông tin
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/modules/theme.js"></script>
+    <script src="js/members.js"></script>
+</body>
+</html>

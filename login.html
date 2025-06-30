@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - VSM CMS</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Left Side - VSM Branding -->
+        <div class="login-left">
+            <div class="brand-section">
+                <div class="logo-container">
+                    <img src="assets/logo.png" alt="VSM Logo" class="logo">
+                    <div class="brand-text">
+                        <h1>Vietnam Student Marathon</h1>
+                        <p>Content Management System</p>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <img src="assets/vsm-hero.jpg" alt="VSM Marathon" class="hero-img">
+                </div>
+                
+                <div class="brand-info">
+                    <h2>Khởi dậy hành trình chạy bộ của bạn</h2>
+                    <p>Hệ thống quản lý nội dung dành cho Vietnam Student Marathon - nơi kết nối sinh viên đam mê chạy bộ, rèn luyện sức khỏe và chinh phục giới hạn bản thân qua những sự kiện marathon quy mô toàn quốc.</p>
+                    
+                    <div class="features">
+                        <div class="feature">
+                            <i data-feather="users"></i>
+                            <span>Quản lý thành viên</span>
+                        </div>
+                        <div class="feature">
+                            <i data-feather="calendar"></i>
+                            <span>Lịch sự kiện</span>
+                        </div>
+                        <div class="feature">
+                            <i data-feather="edit"></i>
+                            <span>Tạo nội dung</span>
+                        </div>
+                        <div class="feature">
+                            <i data-feather="bar-chart-2"></i>
+                            <span>Thống kê chi tiết</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="login-right">
+            <div class="login-form-container">
+                <div class="form-header">
+                    <h2>Đăng nhập hệ thống</h2>
+                    <p>Chào mừng trở lại! Vui lòng đăng nhập để tiếp tục.</p>
+                </div>
+                
+                <!-- Demo Accounts -->
+                <div class="demo-accounts">
+                    <h3>Tài khoản demo</h3>
+                    <div class="demo-buttons">
+                        <button type="button" class="demo-btn admin-demo" data-email="admin@vsm.org.vn" data-password="admin123">
+                            <i data-feather="shield"></i>
+                            <div>
+                                <strong>Administrator</strong>
+                                <small>admin@vsm.org.vn</small>
+                            </div>
+                        </button>
+                        <button type="button" class="demo-btn editor-demo" data-email="editor@vsm.org.vn" data-password="editor123">
+                            <i data-feather="edit"></i>
+                            <div>
+                                <strong>Cộng tác viên</strong>
+                                <small>editor@vsm.org.vn</small>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="divider">
+                    <span>hoặc đăng nhập bằng tài khoản</span>
+                </div>
+                
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <i data-feather="mail"></i>
+                            <input type="email" id="email" name="email" required placeholder="Nhập địa chỉ email">
+                        </div>
+                        <div class="form-error" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Mật khẩu</label>
+                        <div class="input-group">
+                            <i data-feather="lock"></i>
+                            <input type="password" id="password" name="password" required placeholder="Nhập mật khẩu">
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                <i data-feather="eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-error" id="passwordError"></div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="remember" name="remember">
+                            <span class="checkmark"></span>
+                            Ghi nhớ đăng nhập
+                        </label>
+                        <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span class="btn-text">Đăng nhập</span>
+                        <div class="btn-loader" style="display: none;">
+                            <div class="spinner"></div>
+                            Đang đăng nhập...
+                        </div>
+                    </button>
+                    
+                    <div class="form-message" id="formMessage"></div>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Cần hỗ trợ? <a href="mailto:vsm.org.vn@gmail.com">Liên hệ admin</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="login-footer">
+        <div class="footer-content">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i data-feather="mail"></i>
+                    <span>vsm.org.vn@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i data-feather="map-pin"></i>
+                    <span>Tầng 15 - UEH, 279 Nguyễn Tri Phương, Q10, TP.HCM</span>
+                </div>
+                <div class="contact-item">
+                    <i data-feather="phone"></i>
+                    <span>0329 381 489</span>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Vietnam Student Marathon. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

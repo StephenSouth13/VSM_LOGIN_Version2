@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa bài viết - VSM CMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="/placeholder.svg?height=40&width=40" alt="VSM Logo">
+                    <span>VSM CMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i data-feather="home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="index.html" class="nav-link">
+                            <i data-feather="edit-3"></i>
+                            <span>Bài viết</span>
+                        </a>
+                    </li>
+                    <li class="nav-item admin-only">
+                        <a href="members.html" class="nav-link">
+                            <i data-feather="users"></i>
+                            <span>Thành viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="calendar.html" class="nav-link">
+                            <i data-feather="calendar"></i>
+                            <span>Lịch sự kiện</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="statistics.html" class="nav-link">
+                            <i data-feather="bar-chart-2"></i>
+                            <span>Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="export.html" class="nav-link">
+                            <i data-feather="download"></i>
+                            <span>Xuất dữ liệu</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="/placeholder.svg?height=36&width=36" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <div class="user-name" id="userName">Admin User</div>
+                        <div class="user-role" id="userRole">Administrator</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Đăng xuất">
+                    <i data-feather="log-out"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Chỉnh sửa bài viết</h1>
+                    <p>Cập nhật nội dung bài viết với editor hiện đại</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="theme-toggle" id="themeToggle" title="Chuyển đổi theme">
+                        <i data-feather="moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Loading State -->
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Đang tải bài viết...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="empty-state" style="display: none;">
+                    <i data-feather="alert-circle"></i>
+                    <h3>Có lỗi xảy ra</h3>
+                    <p id="errorMessage">Không thể tải bài viết</p>
+                    <a href="index.html" class="btn btn-primary">Quay lại Dashboard</a>
+                </div>
+
+                <!-- Edit Form -->
+                <form id="editPostForm" class="post-form" style="display: none;">
+                    <div class="form-grid">
+                        <!-- Main Content -->
+                        <div class="form-main">
+                            <!-- Title -->
+                            <div class="form-group">
+                                <label for="title">Tiêu đề bài viết *</label>
+                                <input type="text" id="title" name="title" placeholder="Nhập tiêu đề bài viết..." required>
+                                <div class="form-error" id="titleError"></div>
+                            </div>
+
+                            <!-- Short Description -->
+                            <div class="form-group">
+                                <label for="shortDescription">Mô tả ngắn</label>
+                                <textarea id="shortDescription" name="shortDescription" rows="3" placeholder="Mô tả ngắn gọn về bài viết..."></textarea>
+                                <small>Mô tả này sẽ hiển thị trong danh sách bài viết và kết quả tìm kiếm</small>
+                            </div>
+
+                            <!-- Rich Text Editor -->
+                            <div class="form-group">
+                                <label for="content">Nội dung bài viết *</label>
+                                
+                                <!-- Editor Toolbar -->
+                                <div class="editor-toolbar" id="editorToolbar">
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-command="undo" title="Hoàn tác">
+                                            <i data-feather="corner-up-left"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="redo" title="Làm lại">
+                                            <i data-feather="corner-up-right"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="toolbar-separator"></div>
+
+                                    <div class="toolbar-group">
+                                        <select class="toolbar-select" data-command="formatBlock" title="Định dạng">
+                                            <option value="p">Đoạn văn</option>
+                                            <option value="h1">Tiêu đề 1</option>
+                                            <option value="h2">Tiêu đề 2</option>
+                                            <option value="h3">Tiêu đề 3</option>
+                                            <option value="h4">Tiêu đề 4</option>
+                                            <option value="h5">Tiêu đề 5</option>
+                                            <option value="h6">Tiêu đề 6</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="toolbar-separator"></div>
+
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-command="bold" title="Đậm">
+                                            <i data-feather="bold"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="italic" title="Nghiêng">
+                                            <i data-feather="italic"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="underline" title="Gạch chân">
+                                            <i data-feather="underline"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="strikeThrough" title="Gạch ngang">
+                                            <i data-feather="minus"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="toolbar-separator"></div>
+
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-command="justifyLeft" title="Căn trái">
+                                            <i data-feather="align-left"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="justifyCenter" title="Căn giữa">
+                                            <i data-feather="align-center"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="justifyRight" title="Căn phải">
+                                            <i data-feather="align-right"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="justifyFull" title="Căn đều">
+                                            <i data-feather="align-justify"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="toolbar-separator"></div>
+
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-command="insertUnorderedList" title="Danh sách không thứ tự">
+                                            <i data-feather="list"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="insertOrderedList" title="Danh sách có thứ tự">
+                                            <i data-feather="hash"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="outdent" title="Giảm thụt lề">
+                                            <i data-feather="chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="indent" title="Tăng thụt lề">
+                                            <i data-feather="chevron-right"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="toolbar-separator"></div>
+
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-command="createLink" title="Chèn liên kết">
+                                            <i data-feather="link"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="unlink" title="Xóa liên kết">
+                                            <i data-feather="link-2"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" data-command="insertImage" title="Chèn ảnh">
+                                            <i data-feather="image"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="toolbar-separator"></div>
+
+                                    <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" data-command="removeFormat" title="Xóa định dạng">
+                                            <i data-feather="x"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" id="togglePreview" title="Xem trước">
+                                            <i data-feather="eye"></i>
+                                        </button>
+                                        <button type="button" class="toolbar-btn" id="toggleFullscreen" title="Toàn màn hình">
+                                            <i data-feather="maximize"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Editor Content -->
+                                <div class="editor-container" id="editorContainer">
+                                    <div class="editor-content" id="editorContent" contenteditable="true" data-placeholder="Bắt đầu viết nội dung bài viết của bạn...">
+                                    </div>
+                                    <div class="editor-preview" id="editorPreview" style="display: none;">
+                                    </div>
+                                </div>
+
+                                <!-- Hidden textarea for form submission -->
+                                <textarea id="content" name="content" style="display: none;"></textarea>
+                                <div class="form-error" id="contentError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar -->
+                        <div class="form-sidebar">
+                            <!-- Post Info -->
+                            <div class="form-card">
+                                <h3>Thông tin bài viết</h3>
+                                <div class="post-info">
+                                    <div class="info-item">
+                                        <label>Tác giả:</label>
+                                        <span id="authorName">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Ngày tạo:</label>
+                                        <span id="createdAt">-</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <label>Cập nhật lần cuối:</label>
+                                        <span id="updatedAt">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Publish Settings -->
+                            <div class="form-card">
+                                <h3>Cài đặt xuất bản</h3>
+                                
+                                <div class="form-group">
+                                    <label for="publishedAt">Thời gian xuất bản</label>
+                                    <input type="datetime-local" id="publishedAt" name="publishedAt">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="isPublished" name="isPublished">
+                                        <span class="checkmark"></span>
+                                        Xuất bản ngay
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Featured Image -->
+                            <div class="form-card">
+                                <h3>Ảnh đại diện</h3>
+                                
+                                <div class="form-group">
+                                    <label for="thumbnail">URL ảnh đại diện</label>
+                                    <input type="url" id="thumbnail" name="thumbnail" placeholder="https://example.com/image.jpg">
+                                </div>
+
+                                <div class="thumbnail-preview">
+                                    <img id="thumbnailImg" src="/placeholder.svg?height=200&width=300" alt="Ảnh đại diện">
+                                </div>
+                            </div>
+
+                            <!-- Categories & Tags -->
+                            <div class="form-card">
+                                <h3>Phân loại</h3>
+                                
+                                <div class="form-group">
+                                    <label for="category">Danh mục</label>
+                                    <select id="category" name="category">
+                                        <option value="">Chọn danh mục</option>
+                                        <option value="su-kien">Sự kiện</option>
+                                        <option value="tin-tuc">Tin tức</option>
+                                        <option value="huong-dan">Hướng dẫn</option>
+                                        <option value="chia-se">Chia sẻ</option>
+                                        <option value="thanh-tich">Thành tích</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tags">Thẻ (Tags)</label>
+                                    <input type="text" id="tags" name="tags" placeholder="marathon, chạy bộ, thể thao">
+                                    <small>Phân cách các thẻ bằng dấu phẩy</small>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i data-feather="save"></i>
+                                    Cập nhật
+                                </button>
+                                <button type="button" class="btn btn-danger" id="deleteBtn">
+                                    <i data-feather="trash-2"></i>
+                                    Xóa bài viết
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Image Upload Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Chèn ảnh</h3>
+                <button class="modal-close" id="closeImageModal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="imageUrl">URL ảnh</label>
+                    <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="imageAlt">Mô tả ảnh (Alt text)</label>
+                    <input type="text" id="imageAlt" placeholder="Mô tả ảnh">
+                </div>
+                <div class="form-group">
+                    <label for="imageWidth">Chiều rộng (px)</label>
+                    <input type="number" id="imageWidth" placeholder="Để trống = tự động">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelImageInsert">Hủy</button>
+                <button class="btn btn-primary" id="insertImageBtn">Chèn ảnh</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link Modal -->
+    <div class="modal" id="linkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Chèn liên kết</h3>
+                <button class="modal-close" id="closeLinkModal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="url" id="linkUrl" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="linkText">Văn bản hiển thị</label>
+                    <input type="text" id="linkText" placeholder="Nhập văn bản liên kết">
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="linkTarget">
+                        <span class="checkmark"></span>
+                        Mở trong tab mới
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelLinkInsert">Hủy</button>
+                <button class="btn btn-primary" id="insertLinkBtn">Chèn liên kết</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/theme.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/modules/fetch.js"></script>
+    <script src="js/modules/editor.js"></script>
+    <script src="js/edit.js"></script>
+</body>
+</html>

@@ -1,0 +1,614 @@
+/* Enhanced Dark Mode with Ultra-Smooth Transitions */
+
+:root {
+  /* Transition timing functions for different elements */
+  --transition-ultra-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Color transition delays for staggered effect */
+  --bg-transition-delay: 0ms;
+  --text-transition-delay: 50ms;
+  --border-transition-delay: 100ms;
+  --shadow-transition-delay: 150ms;
+}
+
+/* Light theme (default) */
+:root {
+  --bg-color: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-primary: #2c3e50;
+  --text-secondary: #34495e;
+  --text-muted: #7f8c8d;
+  --border-color: #e9ecef;
+  --primary-color: #27ae60;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --error-color: #e74c3c;
+  --info-color: #3498db;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --overlay-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-card: #242424;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #a0a0a0;
+  --border-color: #404040;
+  --primary-color: #27ae60;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --error-color: #e74c3c;
+  --info-color: #3498db;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --overlay-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Ultra-smooth transitions for all theme-sensitive elements */
+*,
+*::before,
+*::after {
+  transition:
+    background-color var(--transition-ultra-smooth) var(--bg-transition-delay),
+    color var(--transition-ultra-smooth) var(--text-transition-delay),
+    border-color var(--transition-ultra-smooth) var(--border-transition-delay),
+    box-shadow var(--transition-ultra-smooth) var(--shadow-transition-delay),
+    opacity var(--transition-smooth),
+    transform var(--transition-smooth);
+}
+
+/* Specific smooth transitions for interactive elements */
+button,
+.btn,
+.nav-link,
+.card,
+.form-control,
+input,
+select,
+textarea,
+.modal,
+.sidebar,
+.topbar {
+  transition: var(--transition-ultra-smooth);
+}
+
+/* Body and main containers with staggered transitions */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  transition: var(--transition-ultra-smooth);
+}
+
+.app-container {
+  background-color: var(--bg-color);
+  transition: var(--transition-ultra-smooth) var(--bg-transition-delay);
+}
+
+/* Sidebar with enhanced transitions */
+.sidebar {
+  background-color: var(--bg-card);
+  border-right-color: var(--border-color);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), border-color
+    var(--transition-ultra-smooth) var(--border-transition-delay), transform var(--transition-smooth);
+}
+
+.sidebar-header {
+  border-bottom-color: var(--border-color);
+  transition: var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.logo span {
+  color: var(--text-primary);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  transition: color var(--transition-ultra-smooth) var(--text-transition-delay), background-color
+    var(--transition-ultra-smooth) var(--bg-transition-delay), transform var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+  transform: translateX(4px);
+}
+
+.sidebar-footer {
+  border-top-color: var(--border-color);
+  transition: var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.user-name {
+  color: var(--text-primary);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+.user-role {
+  color: var(--text-muted);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+/* Main content with smooth transitions */
+.main-content {
+  background-color: var(--bg-color);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), margin-left
+    var(--transition-smooth);
+}
+
+.topbar {
+  background-color: var(--bg-card);
+  border-bottom-color: var(--border-color);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), border-color
+    var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.topbar h1 {
+  color: var(--text-primary);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+.topbar p {
+  color: var(--text-muted);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+/* Cards with enhanced hover effects */
+.card,
+.stats-card,
+.export-card,
+.schedule-card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), border-color
+    var(--transition-ultra-smooth) var(--border-transition-delay), box-shadow var(--transition-ultra-smooth)
+    var(--shadow-transition-delay), transform var(--transition-smooth);
+}
+
+.card:hover,
+.stats-card:hover,
+.export-card:hover,
+.schedule-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  border-bottom-color: var(--border-color);
+  transition: var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.card-title {
+  color: var(--text-primary);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+.card-subtitle {
+  color: var(--text-muted);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+/* Buttons with smooth state transitions */
+.btn {
+  transition: background-color var(--transition-ultra-smooth), color var(--transition-ultra-smooth), border-color
+    var(--transition-ultra-smooth), transform var(--transition-fast), box-shadow var(--transition-smooth);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #229954;
+  border-color: #229954;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Forms with enhanced focus states */
+.form-control,
+input,
+select,
+textarea {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), border-color
+    var(--transition-ultra-smooth) var(--border-transition-delay), color var(--transition-ultra-smooth)
+    var(--text-transition-delay), box-shadow var(--transition-smooth);
+}
+
+.form-control:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+  background-color: var(--bg-card);
+}
+
+.form-label,
+label {
+  color: var(--text-secondary);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+/* Tables with smooth row transitions */
+.table {
+  background-color: var(--bg-card);
+  transition: var(--transition-ultra-smooth) var(--bg-transition-delay);
+}
+
+.table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-bottom-color: var(--border-color);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), color
+    var(--transition-ultra-smooth) var(--text-transition-delay), border-color var(--transition-ultra-smooth)
+    var(--border-transition-delay);
+}
+
+.table td {
+  border-bottom-color: var(--border-color);
+  color: var(--text-primary);
+  transition: color var(--transition-ultra-smooth) var(--text-transition-delay), border-color
+    var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.table tbody tr {
+  transition: background-color var(--transition-smooth);
+}
+
+.table tbody tr:hover {
+  background-color: var(--bg-secondary);
+}
+
+/* Modals with enhanced backdrop transitions */
+.modal {
+  background-color: var(--overlay-color);
+  transition: opacity var(--transition-smooth), visibility var(--transition-smooth), backdrop-filter
+    var(--transition-smooth);
+  backdrop-filter: blur(0px);
+}
+
+.modal.show {
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  transition: background-color var(--transition-ultra-smooth) var(--bg-transition-delay), transform
+    var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.modal-header {
+  border-bottom-color: var(--border-color);
+  transition: var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.modal-footer {
+  border-top-color: var(--border-color);
+  transition: var(--transition-ultra-smooth) var(--border-transition-delay);
+}
+
+.modal-title {
+  color: var(--text-primary);
+  transition: var(--transition-ultra-smooth) var(--text-transition-delay);
+}
+
+/* Theme toggle with enhanced animation */
+.theme-toggle {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color var(--transition-ultra-smooth), color var(--transition-ultra-smooth), border-color
+    var(--transition-ultra-smooth), transform var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.theme-toggle i {
+  transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+}
+
+/* Dark mode icon transitions */
+[data-theme="dark"] .theme-toggle i[data-feather="moon"] {
+  transform: rotate(180deg) scale(0);
+  opacity: 0;
+}
+
+[data-theme="dark"] .theme-toggle i[data-feather="sun"] {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+  display: block !important;
+}
+
+[data-theme="light"] .theme-toggle i[data-feather="sun"] {
+  transform: rotate(-180deg) scale(0);
+  opacity: 0;
+  display: none !important;
+}
+
+[data-theme="light"] .theme-toggle i[data-feather="moon"] {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
+}
+
+/* Scrollbars with smooth transitions */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  transition: var(--transition-smooth);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  transition: var(--transition-ultra-smooth) var(--bg-transition-delay);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+  transition: background-color var(--transition-ultra-smooth), transform var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+  transform: scaleY(1.1);
+}
+
+/* Selection with smooth color transition */
+::selection {
+  background-color: rgba(39, 174, 96, 0.2);
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+/* Focus indicators with enhanced visibility */
+*:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  transition: outline-color var(--transition-smooth);
+}
+
+/* Loading states with smooth opacity */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity var(--transition-smooth);
+}
+
+/* Export specific dark mode styles */
+[data-theme="dark"] .export-section {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .section-header h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .section-header p {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .export-formats button {
+  transition: var(--transition-ultra-smooth);
+}
+
+[data-theme="dark"] .custom-export-form {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .checkbox-group {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .checkbox-item {
+  color: var(--text-secondary);
+  transition: background-color var(--transition-smooth), color var(--transition-smooth);
+}
+
+[data-theme="dark"] .checkbox-item:hover {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .history-table {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .table-header {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .progress-bar {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .progress-fill {
+  background-color: var(--primary-color);
+}
+
+/* Calendar specific dark mode styles */
+[data-theme="dark"] .calendar-controls {
+  background-color: var(--bg-card);
+  border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .view-buttons {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .view-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+[data-theme="dark"] .calendar-day {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth), transform
+    var(--transition-fast);
+}
+
+[data-theme="dark"] .calendar-day:hover {
+  background-color: var(--bg-secondary);
+  transform: scale(1.02);
+}
+
+[data-theme="dark"] .calendar-day.today {
+  background-color: rgba(39, 174, 96, 0.1);
+  border-color: var(--primary-color);
+}
+
+/* Footer dark mode */
+[data-theme="dark"] .app-footer {
+  background-color: var(--bg-card);
+  border-top-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Enhanced animations for theme switching */
+@keyframes themeTransition {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+[data-theme-transitioning] {
+  animation: themeTransition 0.4s ease;
+}
+
+/* Staggered animation for cards */
+.card:nth-child(1) {
+  transition-delay: 0ms;
+}
+.card:nth-child(2) {
+  transition-delay: 50ms;
+}
+.card:nth-child(3) {
+  transition-delay: 100ms;
+}
+.card:nth-child(4) {
+  transition-delay: 150ms;
+}
+.card:nth-child(5) {
+  transition-delay: 200ms;
+}
+.card:nth-child(6) {
+  transition-delay: 250ms;
+}
+
+/* Smooth transitions for all interactive elements */
+.nav-item,
+.btn,
+.card,
+.modal,
+.form-control,
+.calendar-day,
+.export-card,
+.stats-card,
+.schedule-card {
+  transition: var(--transition-ultra-smooth);
+}
+
+/* Reduced motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #000000;
+    --text-muted: #333333;
+  }
+
+  [data-theme="dark"] {
+    --border-color: #ffffff;
+    --text-muted: #cccccc;
+  }
+}
+
+/* Smooth page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: var(--transition-ultra-smooth);
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: var(--transition-ultra-smooth);
+}

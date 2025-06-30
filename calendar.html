@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSM CMS - Lịch</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="css/calendar.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="assets/vsm-hero.jpg" alt="VSM Logo">
+                    <span>VSM CMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i data-feather="home"></i>
+                            <span>Trang chủ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="create.html" class="nav-link">
+                            <i data-feather="plus-circle"></i>
+                            <span>Tạo bài viết</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="members.html" class="nav-link">
+                            <i data-feather="users"></i>
+                            <span>Thành viên</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="calendar.html" class="nav-link">
+                            <i data-feather="calendar"></i>
+                            <span>Lịch</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="statistics.html" class="nav-link">
+                            <i data-feather="bar-chart-2"></i>
+                            <span>Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="export.html" class="nav-link">
+                            <i data-feather="download"></i>
+                            <span>Xuất dữ liệu</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/32" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <div class="user-name">Admin User</div>
+                        <div class="user-role">Quản trị viên</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i data-feather="log-out"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Lịch sự kiện</h1>
+                    <p>Quản lý lịch trình và sự kiện của VSM</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn btn-primary" id="createEventBtn">
+                        <i data-feather="plus"></i>
+                        Tạo sự kiện
+                    </button>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i data-feather="moon"></i>
+                        <i data-feather="sun" style="display: none;"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="calendar-layout">
+                    <!-- Calendar Main -->
+                    <div class="calendar-main">
+                        <!-- Calendar Controls -->
+                        <div class="calendar-controls">
+                            <div class="calendar-nav">
+                                <button class="btn btn-secondary" id="prevMonth">
+                                    <i data-feather="chevron-left"></i>
+                                </button>
+                                <h2 id="currentMonth">Tháng 1 2025</h2>
+                                <button class="btn btn-secondary" id="nextMonth">
+                                    <i data-feather="chevron-right"></i>
+                                </button>
+                                <button class="btn btn-ghost" id="todayBtn">Hôm nay</button>
+                            </div>
+                            
+                            <div class="view-controls">
+                                <div class="view-buttons">
+                                    <button class="view-btn active" data-view="month">Tháng</button>
+                                    <button class="view-btn" data-view="week">Tuần</button>
+                                    <button class="view-btn" data-view="day">Ngày</button>
+                                    <button class="view-btn" data-view="agenda">Lịch trình</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Views -->
+                        <div class="calendar-container">
+                            <!-- Month View -->
+                            <div id="monthView" class="calendar-view">
+                                <div class="calendar-header">
+                                    <div class="day-header">Chủ nhật</div>
+                                    <div class="day-header">Thứ hai</div>
+                                    <div class="day-header">Thứ ba</div>
+                                    <div class="day-header">Thứ tư</div>
+                                    <div class="day-header">Thứ năm</div>
+                                    <div class="day-header">Thứ sáu</div>
+                                    <div class="day-header">Thứ bảy</div>
+                                </div>
+                                <div id="calendarGrid" class="calendar-grid">
+                                    <!-- Calendar days will be generated here -->
+                                </div>
+                            </div>
+
+                            <!-- Week View -->
+                            <div id="weekView" class="calendar-view" style="display: none;">
+                                <div class="week-view-container">
+                                    <div class="week-header">
+                                        <div class="time-column"></div>
+                                        <div id="weekDays" class="week-days">
+                                            <!-- Week days will be generated here -->
+                                        </div>
+                                    </div>
+                                    <div class="week-body">
+                                        <div id="timeSlots" class="time-slots">
+                                            <!-- Time slots will be generated here -->
+                                        </div>
+                                        <div id="weekEvents" class="week-events">
+                                            <!-- Week events will be positioned here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Day View -->
+                            <div id="dayView" class="calendar-view" style="display: none;">
+                                <div class="day-view-container">
+                                    <h3 id="selectedDayTitle">Thứ hai, 1 tháng 1, 2025</h3>
+                                    <div id="dayTimeline" class="day-timeline">
+                                        <!-- Day timeline will be generated here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Agenda View -->
+                            <div id="agendaView" class="calendar-view" style="display: none;">
+                                <div class="agenda-controls">
+                                    <select id="agendaPeriod" class="form-control">
+                                        <option value="week">Tuần này</option>
+                                        <option value="month">Tháng này</option>
+                                        <option value="quarter">Quý này</option>
+                                    </select>
+                                    <select id="agendaCategory" class="form-control">
+                                        <option value="">Tất cả danh mục</option>
+                                        <option value="meeting">Họp</option>
+                                        <option value="event">Sự kiện</option>
+                                        <option value="training">Huấn luyện</option>
+                                        <option value="competition">Thi đấu</option>
+                                    </select>
+                                </div>
+                                <div id="agendaList" class="agenda-list">
+                                    <!-- Agenda items will be listed here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Sidebar -->
+                    <div class="calendar-sidebar">
+                        <!-- Mini Calendar -->
+                        <div class="sidebar-section">
+                            <h3>Lịch nhỏ</h3>
+                            <div class="mini-calendar">
+                                <div class="mini-calendar-header">
+                                    <button id="miniPrevMonth">
+                                        <i data-feather="chevron-left"></i>
+                                    </button>
+                                    <span id="miniCurrentMonth">Tháng 1</span>
+                                    <button id="miniNextMonth">
+                                        <i data-feather="chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="mini-calendar-days">
+                                    <div class="mini-day-header">CN</div>
+                                    <div class="mini-day-header">T2</div>
+                                    <div class="mini-day-header">T3</div>
+                                    <div class="mini-day-header">T4</div>
+                                    <div class="mini-day-header">T5</div>
+                                    <div class="mini-day-header">T6</div>
+                                    <div class="mini-day-header">T7</div>
+                                </div>
+                                <div id="miniCalendarGrid" class="mini-calendar-grid">
+                                    <!-- Mini calendar days will be generated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Events -->
+                        <div class="sidebar-section">
+                            <h3>Sự kiện sắp tới</h3>
+                            <div id="upcomingEventsList" class="upcoming-events">
+                                <!-- Upcoming events will be listed here -->
+                            </div>
+                        </div>
+
+                        <!-- Event Categories -->
+                        <div class="sidebar-section">
+                            <h3>Danh mục</h3>
+                            <div class="event-categories">
+                                <div class="category-item">
+                                    <input type="checkbox" id="cat-meeting" checked>
+                                    <label for="cat-meeting">
+                                        <span class="category-color meeting"></span>
+                                        Họp
+                                    </label>
+                                </div>
+                                <div class="category-item">
+                                    <input type="checkbox" id="cat-event" checked>
+                                    <label for="cat-event">
+                                        <span class="category-color event"></span>
+                                        Sự kiện
+                                    </label>
+                                </div>
+                                <div class="category-item">
+                                    <input type="checkbox" id="cat-training" checked>
+                                    <label for="cat-training">
+                                        <span class="category-color training"></span>
+                                        Huấn luyện
+                                    </label>
+                                </div>
+                                <div class="category-item">
+                                    <input type="checkbox" id="cat-competition" checked>
+                                    <label for="cat-competition">
+                                        <span class="category-color competition"></span>
+                                        Thi đấu
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <p>© 2025 Viet Nam Student Marathon | Được phát triển bởi phòng Công nghệ thông tin</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Event Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="eventModalTitle">Tạo sự kiện mới</h3>
+                <button class="modal-close" id="closeEventModal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="eventTitle">Tiêu đề sự kiện *</label>
+                            <input type="text" id="eventTitle" name="eventTitle" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventCategory">Danh mục</label>
+                            <select id="eventCategory" name="eventCategory">
+                                <option value="meeting">Họp</option>
+                                <option value="event">Sự kiện</option>
+                                <option value="training">Huấn luyện</option>
+                                <option value="competition">Thi đấu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="eventStartDate">Ngày bắt đầu *</label>
+                            <input type="date" id="eventStartDate" name="eventStartDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventStartTime">Giờ bắt đầu</label>
+                            <input type="time" id="eventStartTime" name="eventStartTime">
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="eventEndDate">Ngày kết thúc</label>
+                            <input type="date" id="eventEndDate" name="eventEndDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventEndTime">Giờ kết thúc</label>
+                            <input type="time" id="eventEndTime" name="eventEndTime">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="eventAllDay" name="eventAllDay">
+                            Cả ngày
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventLocation">Địa điểm</label>
+                        <input type="text" id="eventLocation" name="eventLocation" placeholder="Nhập địa điểm">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDescription">Mô tả</label>
+                        <textarea id="eventDescription" name="eventDescription" rows="3" placeholder="Mô tả chi tiết về sự kiện"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="eventReminder" name="eventReminder">
+                            Nhắc nhở
+                        </label>
+                        <select id="reminderTime" name="reminderTime" style="display: none; margin-top: 8px;">
+                            <option value="5">5 phút trước</option>
+                            <option value="15" selected>15 phút trước</option>
+                            <option value="30">30 phút trước</option>
+                            <option value="60">1 giờ trước</option>
+                            <option value="1440">1 ngày trước</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventColor">Màu sắc</label>
+                        <div class="color-picker">
+                            <input type="color" id="eventColor" name="eventColor" value="#3498db">
+                            <div class="color-presets">
+                                <button type="button" class="color-preset" data-color="#3498db" style="background: #3498db;"></button>
+                                <button type="button" class="color-preset" data-color="#e74c3c" style="background: #e74c3c;"></button>
+                                <button type="button" class="color-preset" data-color="#2ecc71" style="background: #2ecc71;"></button>
+                                <button type="button" class="color-preset" data-color="#f39c12" style="background: #f39c12;"></button>
+                                <button type="button" class="color-preset" data-color="#9b59b6" style="background: #9b59b6;"></button>
+                                <button type="button" class="color-preset" data-color="#1abc9c" style="background: #1abc9c;"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelEvent">Hủy</button>
+                <button type="button" class="btn btn-danger" id="deleteEvent" style="display: none;">Xóa</button>
+                <button type="submit" form="eventForm" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Event Modal -->
+    <div id="quickEventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tạo sự kiện nhanh</h3>
+                <button class="modal-close" id="closeQuickEventModal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="quickEventForm">
+                    <div class="form-group">
+                        <label for="quickEventTitle">Tiêu đề sự kiện</label>
+                        <input type="text" id="quickEventTitle" name="quickEventTitle" required placeholder="Nhập tiêu đề sự kiện">
+                    </div>
+                    <div class="form-group">
+                        <label for="quickEventDateTime">Ngày và giờ</label>
+                        <input type="datetime-local" id="quickEventDateTime" name="quickEventDateTime" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelQuickEvent">Hủy</button>
+                <button type="submit" form="quickEventForm" class="btn btn-primary">Tạo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/theme.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/calendar.js"></script>
+</body>
+</html>

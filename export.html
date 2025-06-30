@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VSM CMS - Xuất dữ liệu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="assets/vsm-hero.jpg" alt="VSM Logo">
+                    <span>VSM CMS</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item"><a href="index.html" class="nav-link"><i data-feather="home"></i><span>Trang chủ</span></a></li>
+                    <li class="nav-item"><a href="create.html" class="nav-link"><i data-feather="plus-circle"></i><span>Tạo bài viết</span></a></li>
+                    <li class="nav-item"><a href="members.html" class="nav-link"><i data-feather="users"></i><span>Thành viên</span></a></li>
+                    <li class="nav-item"><a href="calendar.html" class="nav-link"><i data-feather="calendar"></i><span>Lịch</span></a></li>
+                    <li class="nav-item"><a href="statistics.html" class="nav-link"><i data-feather="bar-chart-2"></i><span>Thống kê</span></a></li>
+                    <li class="nav-item active"><a href="export.html" class="nav-link"><i data-feather="download"></i><span>Xuất dữ liệu</span></a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/32" alt="User Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <div class="user-name">Admin User</div>
+                        <div class="user-role">Quản trị viên</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i data-feather="log-out"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Xuất dữ liệu</h1>
+                    <p>Xuất và sao lưu dữ liệu hệ thống VSM</p>
+                </div>
+                <div class="topbar-right">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i data-feather="moon"></i>
+                        <i data-feather="sun" style="display: none;"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="export-container">
+                    <!-- Quick Export Section -->
+                    <section class="export-section">
+                        <div class="section-header">
+                            <h2>Xuất nhanh</h2>
+                            <p>Xuất dữ liệu với các template có sẵn</p>
+                        </div>
+                        <div class="quick-export-grid">
+                            <!-- Export Cards -->
+                            <div class="export-card">
+                                <div class="export-icon"><i data-feather="file-text"></i></div>
+                                <h3>Bài viết</h3>
+                                <p>Xuất tất cả bài viết đã xuất bản và bản nháp</p>
+                                <div class="export-formats">
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('posts', 'json')">JSON</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('posts', 'csv')">CSV</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('posts', 'excel')">Excel</button>
+                                </div>
+                            </div>
+                            <div class="export-card">
+                                <div class="export-icon"><i data-feather="users"></i></div>
+                                <h3>Thành viên</h3>
+                                <p>Xuất danh sách thành viên và thông tin liên quan</p>
+                                <div class="export-formats">
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('members', 'json')">JSON</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('members', 'csv')">CSV</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('members', 'excel')">Excel</button>
+                                </div>
+                            </div>
+                            <div class="export-card">
+                                <div class="export-icon"><i data-feather="calendar"></i></div>
+                                <h3>Sự kiện</h3>
+                                <p>Xuất lịch sự kiện và hoạt động của VSM</p>
+                                <div class="export-formats">
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('events', 'json')">JSON</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('events', 'csv')">CSV</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('events', 'ics')">ICS</button>
+                                </div>
+                            </div>
+                            <div class="export-card">
+                                <div class="export-icon"><i data-feather="bar-chart-2"></i></div>
+                                <h3>Thống kê</h3>
+                                <p>Xuất báo cáo thống kê và phân tích dữ liệu</p>
+                                <div class="export-formats">
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('analytics', 'json')">JSON</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('analytics', 'pdf')">PDF</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('analytics', 'excel')">Excel</button>
+                                </div>
+                            </div>
+                            <div class="export-card">
+                                <div class="export-icon"><i data-feather="image"></i></div>
+                                <h3>Media</h3>
+                                <p>Xuất tệp media và hình ảnh đã tải lên</p>
+                                <div class="export-formats">
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('media', 'zip')">ZIP</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="exportData('media', 'json')">JSON</button>
+                                </div>
+                            </div>
+                            <div class="export-card">
+                                <div class="export-icon"><i data-feather="database"></i></div>
+                                <h3>Sao lưu toàn bộ</h3>
+                                <p>Sao lưu hoàn chỉnh toàn bộ dữ liệu hệ thống</p>
+                                <div class="export-formats">
+                                    <button class="btn btn-sm btn-primary" onclick="exportData('full', 'zip')">
+                                        <i data-feather="download"></i>
+                                        Sao lưu ngay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Custom Export Section -->
+                    <section class="export-section">
+                        <div class="section-header">
+                            <h2>Xuất tùy chỉnh</h2>
+                            <p>Tùy chỉnh dữ liệu và định dạng xuất</p>
+                            <div class="section-actions">
+                                <button class="btn btn-secondary" onclick="previewExport()">
+                                    <i data-feather="eye"></i> Xem trước
+                                </button>
+                                <button class="btn btn-primary" onclick="customExport()">
+                                    <i data-feather="download"></i> Xuất dữ liệu
+                                </button>
+                            </div>
+                        </div>
+                        <div class="custom-export-form">
+                            <div class="form-section">
+                                <h3>Chọn loại dữ liệu</h3>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="export-posts" value="posts" checked>
+                                        <label for="export-posts"><i data-feather="file-text"></i> Bài viết</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="export-members" value="members">
+                                        <label for="export-members"><i data-feather="users"></i> Thành viên</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="export-events" value="events">
+                                        <label for="export-events"><i data-feather="calendar"></i> Sự kiện</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="export-analytics" value="analytics">
+                                        <label for="export-analytics"><i data-feather="bar-chart-2"></i> Thống kê</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="export-media" value="media">
+                                        <label for="export-media"><i data-feather="image"></i> Media</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="export-settings" value="settings">
+                                        <label for="export-settings"><i data-feather="settings"></i> Cài đặt</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-section">
+                                    <h3>Khoảng thời gian</h3>
+                                    <div class="form-group">
+                                        <label for="dateRange">Chọn khoảng thời gian</label>
+                                        <select id="dateRange" class="form-control">
+                                            <option value="all">Tất cả</option>
+                                            <option value="today">Hôm nay</option>
+                                            <option value="week">Tuần này</option>
+                                            <option value="month">Tháng này</option>
+                                            <option value="quarter">Quý này</option>
+                                            <option value="year">Năm này</option>
+                                            <option value="custom">Tùy chỉnh</option>
+                                        </select>
+                                    </div>
+                                    <div id="customDateRange" class="date-range" style="display: none;">
+                                        <div class="form-group">
+                                            <label for="startDate">Từ ngày</label>
+                                            <input type="date" id="startDate" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="endDate">Đến ngày</label>
+                                            <input type="date" id="endDate" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-section">
+                                    <h3>Định dạng và tùy chọn</h3>
+                                    <div class="form-group">
+                                        <label for="exportFormat">Định dạng xuất</label>
+                                        <select id="exportFormat" class="form-control">
+                                            <option value="json">JSON</option>
+                                            <option value="csv">CSV</option>
+                                            <option value="excel">Excel (XLSX)</option>
+                                            <option value="xml">XML</option>
+                                            <option value="pdf">PDF</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="compression">Nén dữ liệu</label>
+                                        <select id="compression" class="form-control">
+                                            <option value="none">Không nén</option>
+                                            <option value="zip">ZIP</option>
+                                            <option value="gzip">GZIP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Tùy chọn nâng cao</h3>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="includeMedia" checked>
+                                        <label for="includeMedia">Bao gồm tệp media</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="includeMetadata" checked>
+                                        <label for="includeMetadata">Bao gồm metadata</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="anonymizeData">
+                                        <label for="anonymizeData">Ẩn danh hóa dữ liệu cá nhân</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="scheduleEmail">
+                                        <label for="scheduleEmail">Gửi email khi hoàn thành</label>
+                                    </div>
+                                </div>
+                                <div id="emailGroup" class="form-group" style="display: none;">
+                                    <label for="emailAddress">Địa chỉ email</label>
+                                    <input type="email" id="emailAddress" class="form-control" placeholder="admin@vsm.org.vn">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Export History Section -->
+                    <section class="export-section">
+                        <div class="section-header">
+                            <h2>Lịch sử xuất</h2>
+                            <p>Theo dõi các lần xuất dữ liệu trước đó</p>
+                            <div class="section-actions">
+                                <button class="btn btn-ghost" onclick="clearExportHistory()">
+                                    <i data-feather="trash-2"></i> Xóa lịch sử
+                                </button>
+                            </div>
+                        </div>
+                        <div class="history-table">
+                            <div class="table-header">
+                                <div class="col">Thời gian</div>
+                                <div class="col">Loại dữ liệu</div>
+                                <div class="col">Định dạng</div>
+                                <div class="col">Kích thước</div>
+                                <div class="col">Trạng thái</div>
+                                <div class="col">Thao tác</div>
+                            </div>
+                            <div id="exportHistoryTable" class="table-body">
+                                <!-- Export history will be populated here -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Scheduled Exports Section -->
+                    <section class="export-section">
+                        <div class="section-header">
+                            <h2>Lịch trình xuất tự động</h2>
+                            <p>Thiết lập xuất dữ liệu định kỳ</p>
+                            <div class="section-actions">
+                                <button class="btn btn-primary" onclick="showScheduleModal()">
+                                    <i data-feather="plus"></i> Tạo lịch trình
+                                </button>
+                            </div>
+                        </div>
+                        <div id="scheduledExportsGrid" class="schedule-grid">
+                            <!-- Scheduled exports will be populated here -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Export Progress Modal -->
+    <div id="exportProgressModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Đang xuất dữ liệu</h3>
+            </div>
+            <div class="modal-body">
+                <div class="export-details">
+                    <div class="detail-row"><span>Loại dữ liệu:</span><span id="exportType">-</span></div>
+                    <div class="detail-row"><span>Định dạng:</span><span id="exportFormat">-</span></div>
+                    <div class="detail-row"><span>Kích thước ước tính:</span><span id="estimatedSize">-</span></div>
+                </div>
+                <div class="progress-info">
+                    <div id="progressText" class="progress-text">Đang chuẩn bị...</div>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div id="progressPercentage" class="progress-percentage">0%</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelExport">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tạo lịch trình xuất</h3>
+                <button class="modal-close" onclick="hideScheduleModal()"><i data-feather="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label for="scheduleName">Tên lịch trình</label>
+                        <input type="text" id="scheduleName" class="form-control" required placeholder="VD: Sao lưu hàng tuần">
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="scheduleType">Loại dữ liệu</label>
+                            <select id="scheduleType" class="form-control" required>
+                                <option value="posts">Bài viết</option>
+                                <option value="members">Thành viên</option>
+                                <option value="events">Sự kiện</option>
+                                <option value="analytics">Thống kê</option>
+                                <option value="full">Toàn bộ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleFormat">Định dạng</label>
+                            <select id="scheduleFormat" class="form-control" required>
+                                <option value="json">JSON</option>
+                                <option value="csv">CSV</option>
+                                <option value="excel">Excel</option>
+                                <option value="zip">ZIP</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="scheduleFrequency">Tần suất</label>
+                            <select id="scheduleFrequency" class="form-control" required>
+                                <option value="daily">Hàng ngày</option>
+                                <option value="weekly">Hàng tuần</option>
+                                <option value="monthly">Hàng tháng</option>
+                                <option value="quarterly">Hàng quý</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleTime">Thời gian</label>
+                            <input type="time" id="scheduleTime" class="form-control" required value="02:00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="scheduleEmail">
+                            <label for="scheduleEmail">Gửi email thông báo</label>
+                        </div>
+                        <input type="email" id="scheduleEmailAddress" class="form-control" placeholder="admin@vsm.org.vn" style="margin-top: 8px; display: none;">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hideScheduleModal()">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="saveSchedule()">Tạo lịch trình</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Xem trước dữ liệu xuất</h3>
+                <button class="modal-close" onclick="hidePreviewModal()"><i data-feather="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-info">
+                    <div class="info-grid">
+                        <div class="info-item"><span>Số bản ghi:</span><span id="previewRecordCount">0</span></div>
+                        <div class="info-item"><span>Kích thước ước tính:</span><span id="previewSize">0 KB</span></div>
+                        <div class="info-item"><span>Định dạng:</span><span id="previewFormat">JSON</span></div>
+                    </div>
+                </div>
+                <div class="preview-content">
+                    <h4>Dữ liệu mẫu:</h4>
+                    <pre id="previewData" class="preview-code"></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="hidePreviewModal()">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="proceedWithExport()">Tiếp tục xuất</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/theme.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/modules/export.js"></script>
+    <script>
+        // Initialize export page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize export manager
+            if (window.ExportManager) {
+                window.exportManager = new window.ExportManager();
+            }
+            
+            // Initialize theme
+            if (window.Theme) {
+                window.Theme.init();
+            }
+            
+            // Initialize feather icons
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>© 2025 Viet Nam Student Marathon | Được phát triển bởi phòng Công nghệ thông tin</p>
+    </footer>
+</body>
+</html>

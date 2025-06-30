@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo bài viết - VSM CMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/darkmode.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Bar -->
+        <header class="editor-topbar">
+            <div class="topbar-left">
+                <button class="btn btn-ghost" onclick="window.location.href='index.html'">
+                    <i data-feather="arrow-left"></i>
+                    <span>Quay lại</span>
+                </button>
+                <div class="post-status">
+                    <span id="autoSaveStatus">Đã lưu</span>
+                </div>
+            </div>
+            
+            <div class="topbar-center">
+                <span class="post-title-preview" id="postTitlePreview">Không có tiêu đề - Bài viết</span>
+                <button class="btn btn-ghost" id="shortcutBtn">
+                    <span>Ctrl+K</span>
+                </button>
+            </div>
+            
+            <div class="topbar-right">
+                <button class="btn btn-secondary" id="previewBtn">
+                    <i data-feather="eye"></i>
+                    <span>Xem trước</span>
+                </button>
+                <button class="btn btn-secondary" id="saveDraftBtn">
+                    <i data-feather="save"></i>
+                    <span>Lưu nháp</span>
+                </button>
+                <button class="btn btn-primary" id="publishBtn">
+                    <i data-feather="send"></i>
+                    <span>Đăng</span>
+                </button>
+                <button class="btn btn-ghost" id="moreOptionsBtn">
+                    <i data-feather="more-vertical"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Editor -->
+        <div class="editor-container">
+            <div class="editor-main">
+                <!-- Post Title -->
+                <div class="post-title-section">
+                    <input 
+                        type="text" 
+                        class="post-title-input" 
+                        placeholder="Thêm tiêu đề bài viết"
+                        id="postTitle"
+                        maxlength="200"
+                    >
+                </div>
+
+                <!-- Editor Content -->
+                <div class="editor-content" id="editorContent">
+                    <div class="editor-placeholder" id="editorPlaceholder">
+                        <p>Bắt đầu viết hoặc gõ '/' để chèn một khối</p>
+                    </div>
+                    <div class="editor-blocks" id="editorBlocks">
+                        <!-- Blocks will be added here -->
+                    </div>
+                </div>
+
+                <!-- Block Inserter -->
+                <div class="block-inserter" id="blockInserter" style="display: none;">
+                    <div class="inserter-search">
+                        <input type="text" placeholder="Tìm kiếm khối..." id="inserterSearch">
+                        <i data-feather="search"></i>
+                    </div>
+                    <div class="inserter-blocks">
+                        <div class="block-category">
+                            <h4>Phổ biến</h4>
+                            <div class="block-grid">
+                                <button class="block-item" data-block="paragraph">
+                                    <i data-feather="type"></i>
+                                    <span>Đoạn văn</span>
+                                </button>
+                                <button class="block-item" data-block="heading">
+                                    <i data-feather="hash"></i>
+                                    <span>Tiêu đề</span>
+                                </button>
+                                <button class="block-item" data-block="image">
+                                    <i data-feather="image"></i>
+                                    <span>Hình ảnh</span>
+                                </button>
+                                <button class="block-item" data-block="list">
+                                    <i data-feather="list"></i>
+                                    <span>Danh sách</span>
+                                </button>
+                                <button class="block-item" data-block="quote">
+                                    <i data-feather="message-square"></i>
+                                    <span>Trích dẫn</span>
+                                </button>
+                                <button class="block-item" data-block="gallery">
+                                    <i data-feather="grid"></i>
+                                    <span>Album ảnh</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="block-category">
+                            <h4>Định dạng</h4>
+                            <div class="block-grid">
+                                <button class="block-item" data-block="code">
+                                    <i data-feather="code"></i>
+                                    <span>Mã nguồn</span>
+                                </button>
+                                <button class="block-item" data-block="table">
+                                    <i data-feather="grid"></i>
+                                    <span>Bảng</span>
+                                </button>
+                                <button class="block-item" data-block="separator">
+                                    <i data-feather="minus"></i>
+                                    <span>Phân cách</span>
+                                </button>
+                                <button class="block-item" data-block="spacer">
+                                    <i data-feather="move-vertical"></i>
+                                    <span>Khoảng trống</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inserter-footer">
+                        <button class="btn btn-link" id="viewAllBlocks">Xem tất cả</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="editor-sidebar" id="editorSidebar">
+                <div class="sidebar-tabs">
+                    <button class="tab-btn active" data-tab="post">Bài viết</button>
+                    <button class="tab-btn" data-tab="block">Khối</button>
+                </div>
+
+                <!-- Post Settings -->
+                <div class="tab-content active" id="postTab">
+                    <div class="sidebar-section">
+                        <h3>Trạng thái & hiển thị</h3>
+                        <div class="form-group">
+                            <label>Hiển thị</label>
+                            <select id="postVisibility">
+                                <option value="public">Công khai</option>
+                                <option value="private">Riêng tư</option>
+                                <option value="password">Bảo vệ bằng mật khẩu</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Xuất bản</label>
+                            <input type="datetime-local" id="publishDate">
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Danh mục</h3>
+                        <div class="category-list">
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="news">
+                                <span>Tin tức</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="events">
+                                <span>Sự kiện</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="training">
+                                <span>Huấn luyện</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="community">
+                                <span>Cộng đồng</span>
+                            </label>
+                        </div>
+                        <button class="btn btn-link" id="addCategoryBtn">+ Thêm danh mục mới</button>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Thẻ</h3>
+                        <div class="tags-input">
+                            <input type="text" placeholder="Thêm thẻ mới" id="tagsInput">
+                            <div class="tags-list" id="tagsList"></div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Ảnh đại diện</h3>
+                        <div class="featured-image" id="featuredImageSection">
+                            <button class="btn btn-secondary" id="setFeaturedImageBtn">
+                                <i data-feather="image"></i>
+                                <span>Đặt ảnh đại diện</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Tóm tắt</h3>
+                        <textarea 
+                            placeholder="Viết tóm tắt ngắn gọn cho bài viết..."
+                            id="postExcerpt"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Block Settings -->
+                <div class="tab-content" id="blockTab">
+                    <div class="sidebar-section">
+                        <h3>Cài đặt khối</h3>
+                        <p class="text-muted">Chọn một khối để xem cài đặt</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Chèn hình ảnh</h3>
+                <button class="modal-close" id="closeImageModal">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="image-upload-tabs">
+                    <button class="tab-btn active" data-tab="upload">Tải lên</button>
+                    <button class="tab-btn" data-tab="url">URL</button>
+                </div>
+                <div class="tab-content active" id="uploadTab">
+                    <div class="upload-area" id="uploadArea">
+                        <i data-feather="upload"></i>
+                        <p>Kéo thả file hoặc click để chọn</p>
+                        <input type="file" id="imageFileInput" accept="image/*" multiple>
+                    </div>
+                </div>
+                <div class="tab-content" id="urlTab">
+                    <div class="form-group">
+                        <label>URL hình ảnh</label>
+                        <input type="url" id="imageUrlInput" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Văn bản thay thế</label>
+                    <input type="text" id="imageAltInput" placeholder="Mô tả hình ảnh">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelImageBtn">Hủy</button>
+                <button class="btn btn-primary" id="insertImageBtn">Chèn</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="js/modules/utils.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/modules/theme.js"></script>
+    <script src="js/modules/editor.js"></script>
+    <script src="js/create.js"></script>
+</body>
+</html>
